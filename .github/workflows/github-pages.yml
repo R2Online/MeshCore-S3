@@ -1,36 +1,42 @@
-name: Build and deploy Docs site to GitHub Pages
-
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
+name: Build Companion Firmwares
 
 permissions:
   contents: write
 
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'companion-*'
+
 jobs:
-  github-pages:
+
+  build:
     runs-on: ubuntu-latest
     steps:
 
-      - name: Checkout Repo
+      - name: Clone Repo
         uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          ruby-version: 3.x
+      - name: Setup Build Environment
+        uses: ./.github/actions/setup-build-environment
 
-      - name: Build
-        run: |
-          pip install mkdocs-material
-          mkdocs build
+      - name: Build Firmwares
+        env:
+          FIRMWARE_VERSION: ${{ env.GIT_TAG_VERSION }}
+        run: /usr/bin/env bash build.sh build-companion-firmwares
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload Workflow Artifacts
+        uses: actions/upload-artifact@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          cname: docs.meshcore.io
-          publish_dir: ./site
-          publish_branch: 'gh-pages'
+          name: companion-firmwares
+          path: out
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          name: Companion Firmware ${{ env.GIT_TAG_VERSION }}
+          body: ""
+          draft: true
+          files: out/*
