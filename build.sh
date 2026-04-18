@@ -206,7 +206,7 @@ build_all_firmwares_by_suffix() {
   # build all repeater firmwares
 #  build_all_firmwares_by_suffix "_repeater"
 
-}
+# }
 
 build_companion_firmwares() {
 
@@ -237,7 +237,7 @@ build_companion_firmwares() {
   # build all room server firmwares
 #  build_all_firmwares_by_suffix "_room_server"
 
-}
+# }
 
 build_firmwares() {
   build_companion_firmwares
