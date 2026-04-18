@@ -193,7 +193,7 @@ build_all_firmwares_by_suffix() {
   done
 }
 
-build_repeater_firmwares() {
+# build_repeater_firmwares() {
 
 #  # build specific repeater firmwares
 #  build_firmware "Heltec_v2_repeater"
@@ -228,21 +228,21 @@ build_companion_firmwares() {
 
 }
 
-build_room_server_firmwares() {
+# build_room_server_firmwares() {
 
 #  # build specific room server firmwares
 #  build_firmware "Heltec_v3_room_server"
 #  build_firmware "RAK_4631_room_server"
 
   # build all room server firmwares
-  build_all_firmwares_by_suffix "_room_server"
+#  build_all_firmwares_by_suffix "_room_server"
 
 }
 
 build_firmwares() {
   build_companion_firmwares
-  build_repeater_firmwares
-  build_room_server_firmwares
+#  build_repeater_firmwares
+#  build_room_server_firmwares
 }
 
 # clean build dir
