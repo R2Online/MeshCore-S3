@@ -214,7 +214,7 @@ build_companion_firmwares() {
 #  build_firmware "Heltec_v2_companion_radio_usb"
 #  build_firmware "Heltec_v2_companion_radio_ble"
 #  build_firmware "Heltec_v3_companion_radio_usb"
-  build_firmware "heltec_v4_companion_radio_ble"
+  build_firmware "Xiao_S3_WIO_companion_radio_ble"
 #  build_firmware "Xiao_S3_WIO_companion_radio_ble"
 #  build_firmware "LilyGo_T3S3_sx1262_companion_radio_usb"
 #  build_firmware "LilyGo_T3S3_sx1262_companion_radio_ble"
