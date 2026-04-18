@@ -13,30 +13,30 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-steps:
+    steps:
+
       - name: Clone Repo
         uses: actions/checkout@v4
 
       - name: Setup Build Environment
         uses: ./.github/actions/setup-build-environment
 
-      - name: Build Xiao S3 Firmware
+      - name: Build Firmwares
         env:
-          FIRMWARE_VERSION: ${{ env.GIT_TAG_VERSION || 'custom' }}
-        run: |
-          # 1. Bouw specifiek de Xiao S3 WIO
-          pio run -e Xiao_S3_WIO_companion_radio_ble
-          
-          # 2. Maak de 'merged' bin (bootloader + app + partitions)
-          pio run -t mergebin -e Xiao_S3_WIO_companion_radio_ble
-          
-          # 3. Maak de 'out' map aan en kopieer de resultaten daarheen
-          mkdir -p out
-          cp .pio/build/Xiao_S3_WIO_companion_radio_ble/firmware.bin out/xiao_s3_custom.bin
-          cp .pio/build/Xiao_S3_WIO_companion_radio_ble/firmware-merged.bin out/xiao_s3_custom-merged.bin
+          FIRMWARE_VERSION: ${{ env.GIT_TAG_VERSION }}
+        run: /usr/bin/env bash build.sh build-companion-firmwares
 
       - name: Upload Workflow Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: companion-firmwares
           path: out
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          name: Companion Firmware ${{ env.GIT_TAG_VERSION }}
+          body: ""
+          draft: true
+          files: out/*
